@@ -11,7 +11,18 @@ app.use(helmet());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Family Movie Watchlist API");
+  res.json({
+    name: "Family Movie Watchlist API",
+    endpoints: {
+      login: "POST /api/auth/login",
+      viewWatchlist: "GET /api/watchlist/:userId",
+      addMovie: "POST /api/watchlist/:userId/movies",
+      updateMovie: "PUT /api/watchlist/:userId/movies/:movieId",
+      removeMovie: "DELETE /api/watchlist/:userId/movies/:movieId",
+    },
+    demoLogin: { username: "dad_miller", password: "parent456" },
+    docs: "https://github.com/KittenLover99/back-end-development-and-apis/tree/main/build-a-family-movie-watchlist-api",
+  });
 });
 
 app.use("/api/auth", authRoutes);
