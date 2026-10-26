@@ -2,18 +2,21 @@ import http from "http";
 import fs from "fs";
 import { WebSocketServer, WebSocket } from "ws";
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // 1. HTTP server that serves the chat page
 const server = http.createServer((req, res) => {
-  fs.readFile("./public/index.html", (err, data) => {
+  const file = req.url === "/script.js" ? "script.js" : "index.html";
+  const type = file.endsWith(".js") ? "text/javascript" : "text/html";
+
+  fs.readFile(`./public/${file}`, (err, data) => {
     if (err) {
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Error loading index.html");
+      res.end("Error loading " + file);
       return;
     }
 
-    res.writeHead(200, { "Content-Type": "text/html" });
+    res.writeHead(200, { "Content-Type": type });
     res.end(data);
   });
 });
