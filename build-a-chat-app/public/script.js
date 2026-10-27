@@ -42,7 +42,8 @@ connectBtn.addEventListener('click', () => {
     return;
   }
   const username = usernameInput.value.trim() || 'Anonymous';
-  socket = new WebSocket(`ws://localhost:3001?username=${encodeURIComponent(username)}`);
+    const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+   socket = new WebSocket(`${protocol}//${location.host}?username=${encodeURIComponent(username)}`);
 
   socket.onopen = () => setConnected(true);
 
